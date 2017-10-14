@@ -59,8 +59,24 @@ function getRandomPhraseAsArray(array) {
   console.log(randomPhrase.split(""));
   return randomPhrase.split("");
 }
-
 getRandomPhraseAsArray(phrases);
+
+function addPhraseToDisplay(array) {
+  const phraseUl = document.querySelector('#phrase ul');
+
+  for (let i = 0; i < array.length; i++) {
+    const li = document.createElement("li");
+    li.textContent = array[i];
+    if (array[i] !== ' ') {
+      li.className = "letter";
+    }
+
+    phraseUl.appendChild(li);
+  }
+}
+
+const phraseArray = getRandomPhraseAsArray(phrases);
+addPhraseToDisplay(phraseArray);
 
 // ======================================================================
 //                         EVENT LISTENERS
