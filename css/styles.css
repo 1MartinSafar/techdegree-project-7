@@ -92,6 +92,10 @@ button {
   color: transparent;
   background: var(--color-neutral-light);
   border-radius: 5px;
+
+  /* MY TRANSITIONS FOR LETTERS SHOWING UP */
+  transition-property: transform, font-weight, background-color, border-radius, box-shadow;
+  transition-duration: 0.8s;
 }
 
 .space {
@@ -101,6 +105,13 @@ button {
 .show {
   color: #000;
   background-color: #76CE82;
+
+  /* MY TRANSITIONS FOR LETTERS SHOWING UP */
+  transform: rotate(360deg);
+  font-weight: bold;
+  background-color: #1de238;
+  border-radius: 35%;
+  box-shadow: inset 0 0 0 10px #53a7ea;
 }
 
 /* Keyboard */

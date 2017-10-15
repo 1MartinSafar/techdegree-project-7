@@ -3,35 +3,40 @@
 // ======================================================================
 
 // Intruction Variables
-const keyboard = document.querySelector('#qwerty');
+const keyboard = document.querySelector('#qwerty'); // was const
 const phrase = document.querySelector('#phrase');
 
 let missed = 0;
 
 const phrases = [
   "pumpkins can be delicious",
-  "There is a capital T in this phrase",
-  "a cat person or a dog person does it matter though",
-  "hard working and trying hard feels good and gets you far",
-  "drinking no sugar water only takes about two weeks to get used to completely",
+  "there used to be a capital t in this phrase",
+  "delicious healthy food exists",
+  "working hard gets you far",
+  "drink a lot of water",
   "never give up",
-  "mind is a very powerful tool",
+  "mind is powerful ",
   "brain is like a muscle the more you use it the more it can do",
-  "weight loss is very simple but does require determination and strong will",
-  "enjoy your days as much as possible and be grateful"
+  "determination and strong will",
+  "enjoy and be grateful"
 ];
 
 // My Variables
 const startButton = document.querySelector('.btn__reset');
 const overlay = document.querySelector('#overlay');
-const tries = document.querySelectorAll('.tries');
+let tries = document.querySelectorAll('.tries'); // was const
+const scoreboard = document.querySelector('#scoreboard'); // was const
+
+const keyboardDefault = keyboard.innerHTML;
+const phraseDefault = phrase.innerHTML;
+const scoreboardDefault = scoreboard.innerHTML;
 
 // Testing Selections
-console.log(keyboard);
-console.log(phrase);
-console.log(startButton);
-console.log(overlay);
-console.log(phrases);
+// console.log(keyboard);
+// console.log(phrase);
+// console.log(startButton);
+// console.log(overlay);
+// console.log(phrases);
 
 // ======================================================================
 //                         FUNCTIONS
@@ -66,7 +71,7 @@ function addPhraseToDisplay(array) {
   const phraseUl = document.querySelector('#phrase ul');
 
   for (let i = 0; i < array.length; i++) {
-    const li = document.createElement("li");
+    let li = document.createElement("li"); // was const
     li.textContent = array[i];
     if (array[i] !== ' ') {
       li.className = "letter";
@@ -78,7 +83,7 @@ function addPhraseToDisplay(array) {
   }
 }
 
-const phraseArray = getRandomPhraseAsArray(phrases);
+let phraseArray = getRandomPhraseAsArray(phrases); // was const
 addPhraseToDisplay(phraseArray);
 
 function checkLetter(guess) {
@@ -98,14 +103,53 @@ function checkWin() {
   const letterCount = document.querySelectorAll('.letter');
   if (showCount.length === letterCount.length) {
     overlay.className = "win";
-    overlay.textContent = "You are victorious!";
+    overlay.innerHTML = "<br><br><br><br><br>"
+    overlay.innerHTML += "You are victorious!";
     overlay.style.display = "flex";
+    // RESET
+    // restart() // ADD AS AN EVENT LISTENER TO THE BUTTON
+
+    // adding a button for RESET
+    overlay.innerHTML += "<br>";
+    overlay.innerHTML += "<a class='btn__reset'>RESTART</a>";
   }
   else if (missed >= 5) {
     overlay.className = "lose";
-    overlay.textContent = "Game over!";
+    overlay.innerHTML = "<br><br><br><br><br>"
+    overlay.innerHTML += "Game over!";
     overlay.style.display = "flex";
+    // RESET
+    // restart()
+
+    // adding a button for RESET
+    overlay.innerHTML += "<br>";
+    overlay.innerHTML += "<a class='btn__reset'>RESTART</a>";
   }
+}
+
+function restart() {
+  // resetting phrase
+  phrase.innerHTML = phraseDefault;
+  // resetting keyboard
+  keyboard.innerHTML = keyboardDefault;
+  // resetting scoreboard
+  scoreboard.innerHTML = scoreboardDefault;
+  // generating a new random phrase
+  // addPhraseToDisplay(phraseArray);
+  let phraseArray = getRandomPhraseAsArray(phrases); // was const
+  addPhraseToDisplay(phraseArray);
+  // setting the number of misses to zero
+  missed = 0;
+  // hiding overlay
+  overlay.style.display = "none";
+
+  // giving scoreboard LI
+  let newTries = document.querySelectorAll('.tries');
+  for (let i = 0; i < newTries.length; i++) {
+    newTries[i].className += " NEW-TRY";
+  }
+  // resetting TRIES
+  tries = document.querySelectorAll(".tries");
 }
 
 // ======================================================================
@@ -122,7 +166,7 @@ keyboard.addEventListener('click', function(e) {
 
   console.log(e.target);
 
-  const clicked = e.target;
+  const clicked = e.target; // was const
   if (clicked.tagName === 'BUTTON') {
     clicked.style.className += " chosen";
     clicked.setAttribute("disabled", true);
@@ -130,17 +174,21 @@ keyboard.addEventListener('click', function(e) {
     if (letterFound === null) {
 
       console.log(tries[missed]);
+      console.log("TRIES DISPLAY TO NONE: " + tries[missed].style.display);
 
       tries[missed].style.display = "none";
       missed++;
+      console.log(">>> MISSED: " + missed);
     }
   }
   checkWin();
 });
 
-
-
-
+overlay.addEventListener('click', function(e) {
+  if (e.target.innerHTML === "RESTART") {
+    restart();
+  }
+});
 
 
 
