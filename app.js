@@ -23,14 +23,14 @@ const phrases = [
 
 // My Variables
 const startButton = document.querySelector('.btn__reset');
-const startOverlay = document.querySelector('#overlay');
+const overlay = document.querySelector('#overlay');
 const tries = document.querySelectorAll('.tries');
 
 // Testing Selections
 console.log(keyboard);
 console.log(phrase);
 console.log(startButton);
-console.log(startOverlay);
+console.log(overlay);
 console.log(phrases);
 
 // ======================================================================
@@ -93,14 +93,29 @@ function checkLetter(guess) {
   return matching;
 }
 
+function checkWin() {
+  const showCount = document.querySelectorAll('.show');
+  const letterCount = document.querySelectorAll('.letter');
+  if (showCount.length === letterCount.length) {
+    overlay.className = "win";
+    overlay.textContent = "You are victorious!";
+    overlay.style.display = "flex";
+  }
+  else if (missed >= 5) {
+    overlay.className = "lose";
+    overlay.textContent = "Game over!";
+    overlay.style.display = "flex";
+  }
+}
+
 // ======================================================================
 //                         EVENT LISTENERS
 // ======================================================================
 
 // Event Listeners
 startButton.addEventListener('click', function() {
-  // $(startOverlay).hide();
-  startOverlay.style.display = "none";
+  // $(overlay).hide();
+  overlay.style.display = "none";
 });
 
 keyboard.addEventListener('click', function(e) {
@@ -120,6 +135,7 @@ keyboard.addEventListener('click', function(e) {
       missed++;
     }
   }
+  checkWin();
 });
 
 
