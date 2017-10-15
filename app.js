@@ -3,7 +3,7 @@
 // ======================================================================
 
 // Intruction Variables
-const qwerty = document.querySelector('#qwerty');
+const keyboard = document.querySelector('#qwerty');
 const phrase = document.querySelector('#phrase');
 
 let missed = 0;
@@ -24,9 +24,10 @@ const phrases = [
 // My Variables
 const startButton = document.querySelector('.btn__reset');
 const startOverlay = document.querySelector('#overlay');
+const tries = document.querySelectorAll('.tries');
 
 // Testing Selections
-console.log(qwerty);
+console.log(keyboard);
 console.log(phrase);
 console.log(startButton);
 console.log(startOverlay);
@@ -69,6 +70,8 @@ function addPhraseToDisplay(array) {
     li.textContent = array[i];
     if (array[i] !== ' ') {
       li.className = "letter";
+    } else {
+      li.className = "space";
     }
 
     phraseUl.appendChild(li);
@@ -77,6 +80,18 @@ function addPhraseToDisplay(array) {
 
 const phraseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phraseArray);
+
+function checkLetter(guess) {
+  const letters = document.querySelectorAll('.letter');
+  let matching = null;
+  for (let i = 0; i < letters.length; i++) {
+    if (letters[i].textContent === guess.textContent) {
+      letters[i].className += " show";
+      matching = guess.textContent;
+    }
+  }
+  return matching;
+}
 
 // ======================================================================
 //                         EVENT LISTENERS
@@ -88,7 +103,24 @@ startButton.addEventListener('click', function() {
   startOverlay.style.display = "none";
 });
 
+keyboard.addEventListener('click', function(e) {
 
+  console.log(e.target);
+
+  const clicked = e.target;
+  if (clicked.tagName === 'BUTTON') {
+    clicked.style.className += " chosen";
+    clicked.setAttribute("disabled", true);
+    let letterFound = checkLetter(clicked);
+    if (letterFound === null) {
+
+      console.log(tries[missed]);
+
+      tries[missed].style.display = "none";
+      missed++;
+    }
+  }
+});
 
 
 
