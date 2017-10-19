@@ -3,7 +3,7 @@
 // ======================================================================
 
 // Intruction Variables
-const keyboard = document.querySelector('#qwerty'); // was const
+const keyboard = document.querySelector('#qwerty');
 const phrase = document.querySelector('#phrase');
 
 let missed = 0;
@@ -24,19 +24,12 @@ const phrases = [
 // My Variables
 const startButton = document.querySelector('.btn__reset');
 const overlay = document.querySelector('#overlay');
-let tries = document.querySelectorAll('.tries'); // was const
-const scoreboard = document.querySelector('#scoreboard'); // was const
+let tries = document.querySelectorAll('.tries');
+const scoreboard = document.querySelector('#scoreboard');
 
 const keyboardDefault = keyboard.innerHTML;
 const phraseDefault = phrase.innerHTML;
 const scoreboardDefault = scoreboard.innerHTML;
-
-// Testing Selections
-// console.log(keyboard);
-// console.log(phrase);
-// console.log(startButton);
-// console.log(overlay);
-// console.log(phrases);
 
 // ======================================================================
 //                         FUNCTIONS
@@ -47,45 +40,36 @@ function getRandom(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
-  // [0 - 0.99) * (10 - 0)
-  // [0 - 0.99) * 10 => always < 10 => always 0 - 9 values
-  // (0 - 9) + 0 => 0 - 9 values
 }
 
+// Gets a random phrase from the phrases array of strings, returns an array
 function getRandomPhraseAsArray(array) {
   let randomIndex = getRandom(0, array.length);
-  console.log(randomIndex);
-
   let randomPhrase = phrases[randomIndex];
-  console.log(randomPhrase);
-
-  // str.split([separator[, limit]])
-  // Tip: If an empty string ("") is used as the separator,
-  // the string is split between each character.
-  console.log(randomPhrase.split(""));
   return randomPhrase.split("");
 }
 getRandomPhraseAsArray(phrases);
 
+// Adds the phrase to the game display
 function addPhraseToDisplay(array) {
   const phraseUl = document.querySelector('#phrase ul');
 
   for (let i = 0; i < array.length; i++) {
-    let li = document.createElement("li"); // was const
+    let li = document.createElement("li");
     li.textContent = array[i];
     if (array[i] !== ' ') {
       li.className = "letter";
     } else {
       li.className = "space";
     }
-
     phraseUl.appendChild(li);
   }
 }
 
-let phraseArray = getRandomPhraseAsArray(phrases); // was const
+let phraseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phraseArray);
 
+// Checks if the chosen letter is a match
 function checkLetter(guess) {
   const letters = document.querySelectorAll('.letter');
   let matching = null;
@@ -98,35 +82,33 @@ function checkLetter(guess) {
   return matching;
 }
 
+// Checks if the game has ended
 function checkWin() {
   const showCount = document.querySelectorAll('.show');
   const letterCount = document.querySelectorAll('.letter');
+
   if (showCount.length === letterCount.length) {
     overlay.className = "win";
     overlay.innerHTML = "<br><br><br><br><br>"
     overlay.innerHTML += "You are victorious!";
     overlay.style.display = "flex";
-    // RESET
-    // restart() // ADD AS AN EVENT LISTENER TO THE BUTTON
-
     // adding a button for RESET
     overlay.innerHTML += "<br>";
     overlay.innerHTML += "<a class='btn__reset'>RESTART</a>";
   }
+
   else if (missed >= 5) {
     overlay.className = "lose";
     overlay.innerHTML = "<br><br><br><br><br>"
     overlay.innerHTML += "Game over!";
     overlay.style.display = "flex";
-    // RESET
-    // restart()
-
     // adding a button for RESET
     overlay.innerHTML += "<br>";
     overlay.innerHTML += "<a class='btn__reset'>RESTART</a>";
   }
 }
 
+// restarts the game
 function restart() {
   // resetting phrase
   phrase.innerHTML = phraseDefault;
@@ -135,19 +117,12 @@ function restart() {
   // resetting scoreboard
   scoreboard.innerHTML = scoreboardDefault;
   // generating a new random phrase
-  // addPhraseToDisplay(phraseArray);
-  let phraseArray = getRandomPhraseAsArray(phrases); // was const
+  let phraseArray = getRandomPhraseAsArray(phrases);
   addPhraseToDisplay(phraseArray);
   // setting the number of misses to zero
   missed = 0;
   // hiding overlay
   overlay.style.display = "none";
-
-  // giving scoreboard LI
-  let newTries = document.querySelectorAll('.tries');
-  for (let i = 0; i < newTries.length; i++) {
-    newTries[i].className += " NEW-TRY";
-  }
   // resetting TRIES
   tries = document.querySelectorAll(".tries");
 }
@@ -156,29 +131,21 @@ function restart() {
 //                         EVENT LISTENERS
 // ======================================================================
 
-// Event Listeners
 startButton.addEventListener('click', function() {
-  // $(overlay).hide();
   overlay.style.display = "none";
 });
 
 keyboard.addEventListener('click', function(e) {
+  const clicked = e.target;
 
-  console.log(e.target);
-
-  const clicked = e.target; // was const
   if (clicked.tagName === 'BUTTON') {
     clicked.style.className += " chosen";
     clicked.setAttribute("disabled", true);
     let letterFound = checkLetter(clicked);
+
     if (letterFound === null) {
-
-      console.log(tries[missed]);
-      console.log("TRIES DISPLAY TO NONE: " + tries[missed].style.display);
-
       tries[missed].style.display = "none";
       missed++;
-      console.log(">>> MISSED: " + missed);
     }
   }
   checkWin();
