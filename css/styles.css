@@ -120,6 +120,9 @@ button {
   display: flex;
   justify-content: center;
 }
+.keyrow button {
+  cursor: pointer;
+}
 
 .chosen {
   background: var(--color-neutral);
@@ -129,6 +132,7 @@ button {
 }
 
 .btn__reset {
+  cursor: pointer;
   padding: 8px;
   margin: 50px auto;
   background: #FFFFFF;
